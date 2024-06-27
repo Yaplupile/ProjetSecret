@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://06iwe3r7k4xm"]
+
+[ext_resource type="PackedScene" uid="uid://cq1nrbh64oh2t" path="res://scenes/player.tscn" id="1_gdenh"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e4vik"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ovacg"]
+sky_material = SubResource("ProceduralSkyMaterial_e4vik")
+
+[sub_resource type="Environment" id="Environment_426pv"]
+background_mode = 2
+sky = SubResource("Sky_ovacg")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_x3j65"]
+size = Vector2(10, 10)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bvkni"]
+points = PackedVector3Array(5.07738, 0.079334, 5.07738, -5.07738, -0.079334, -5.07738, -5.07738, 0.079334, -5.07738, 5.07738, -0.079334, -5.07738, -5.07738, -0.079334, 5.07738, -5.07738, 0.079334, 5.07738, 5.07738, 0.079334, -5.07738, 5.07738, -0.079334, 5.07738)
+
+[node name="Scene" type="Node"]
+
+[node name="Arena" type="Node3D" parent="."]
+
+[node name="Player" parent="Arena" instance=ExtResource("1_gdenh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Arena"]
+environment = SubResource("Environment_426pv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Arena"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="Arena"]
+mesh = SubResource("PlaneMesh_x3j65")
+
+[node name="GroundBody" type="StaticBody3D" parent="Arena/Ground"]
+
+[node name="GroundShape" type="CollisionShape3D" parent="Arena/Ground/GroundBody"]
+shape = SubResource("ConvexPolygonShape3D_bvkni")
